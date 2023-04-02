@@ -13,17 +13,13 @@ class Game {
 
   constructor(size: number = 4) {
     this.size = size;
-    this.board = [
-      [undefined, undefined, undefined, undefined],
-      [1, undefined, 1, 1],
-      [1, undefined, 1, 1],
-      [undefined, undefined, undefined, undefined],
-    ]; //this.generateInitialBoard();
-
-    this.updateEmptySquares();
-    this.addNumberToBoard();
-    this.addNumberToBoard();
-    this.addNumberToBoard();
+    // this.board = [
+    //   [undefined, undefined, undefined, undefined],
+    //   [1, undefined, 1, 1],
+    //   [1, undefined, 1, 1],
+    //   [undefined, undefined, undefined, undefined],
+    // ]; //this.generateInitialBoard();
+    this.board = this.generateInitialBoard()
     this.addNumberToBoard();
   }
 
@@ -41,7 +37,6 @@ class Game {
   }
 
   addNumberToBoard() {
-    // TODO: Add possible initial value of 4
     if (!this.board) return;
 
     const random = this.emptySquares.splice(rand(this.emptySquares.length), 1);
