@@ -1,24 +1,20 @@
 type Swipe = "left" | "top" | "right" | "bottom";
+type Status = "win" | "inProgress" |  "lost";
 type Previous = {
   isAvailable: boolean;
   howMany: number;
   tileValue: number | undefined;
 };
-const TILE_INITIAL_VALUE = 1;
+const TILE_INITIAL_VALUE = 2;
 
 class Game {
   size: number;
   board: Array<Array<number | undefined>>;
   emptySquares: string[] = [];
+  status: Status = "inProgress";
 
-  constructor(size: number = 4) {
+  constructor(size: number = 6) {
     this.size = size;
-    // this.board = [
-    //   [undefined, undefined, undefined, undefined],
-    //   [1, undefined, 1, 1],
-    //   [1, undefined, 1, 1],
-    //   [undefined, undefined, undefined, undefined],
-    // ]; //this.generateInitialBoard();
     this.board = this.generateInitialBoard()
     this.addNumberToBoard();
   }
@@ -37,7 +33,7 @@ class Game {
   }
 
   addNumberToBoard() {
-    if (!this.board) return;
+    if (!this.board || this.status !== "inProgress") return;
 
     const random = this.emptySquares.splice(rand(this.emptySquares.length), 1);
 
@@ -49,14 +45,19 @@ class Game {
     const emptySquares = [];
     for (let i = 0; i < this.size; i++) {
       for (let j = 0; j < this.size; j++) {
-        if (!this.board[i][j]) continue;
+        if (this.board[i][j]) continue;
         emptySquares.push(`${i}.${j}`);
       }
     }
     this.emptySquares = emptySquares;
+    if (emptySquares.length === 0) {
+      this.status =  "lost"
+    }
   }
 
   swipe(dir: Swipe) {
+    if (this.status !== "inProgress") return
+
     console.time("swipe timming");
     switch (dir) {
       case "left": {
@@ -68,7 +69,6 @@ class Game {
         break;
       }
       case "right": {
-        console.log("swipe right");
         for (let i = 0; i <= this.size - 1; i++) {
           let previous: Previous = {
             isAvailable: false,
@@ -77,7 +77,6 @@ class Game {
           };
           for (let j = this.size - 1; j >= 0; j--) {
             let currentTileValue = this.board[i][j];
-            console.log(`${i}.${j}: `, currentTileValue, previous);
             // No value in current tile
             if (!currentTileValue) {
               previous = {
@@ -101,12 +100,13 @@ class Game {
               continue;
             }
 
-            // Value in current tile, no space before but values ARE equal
+            // MERGE: Value in current tile, no space before but values ARE equal
             if (
               // !previous.isAvailable &&
               previous.tileValue === currentTileValue
             ) {
-              this.board[i][j + previous.howMany + 1] = previous.tileValue + currentTileValue;
+              const newValue = previous.tileValue + currentTileValue;
+              this.board[i][j + previous.howMany + 1] = newValue; 
               this.board[i][j] = undefined;
 
               previous = {
@@ -114,7 +114,10 @@ class Game {
                 howMany: 1 + previous.howMany,
                 tileValue: undefined,
               };
-
+              if (newValue === 2048){
+                this.status = "win"
+                break;
+              }
               continue;
             }
 
@@ -139,8 +142,9 @@ class Game {
         throw new Error("Not a valid direction");
       }
     }
-    console.table(this.board);
     this.updateEmptySquares();
+    this.addNumberToBoard();
+    console.table(this.board);
     console.timeEnd("swipe timming");
   }
 }
