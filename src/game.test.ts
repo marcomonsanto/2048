@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import flatten from 'lodash.flatten'
+import {flatten} from 'lodash-es'
 import { Game } from './game'
 
 describe("Game Testsuite",  () => {

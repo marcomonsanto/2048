@@ -3,7 +3,7 @@ import { Game } from './game'
 
 const game = new Game();
 console.table(game.board);
-console.log(game.empty);
+console.log(game.emptySquares);
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
