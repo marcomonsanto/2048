@@ -15,9 +15,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button id="swipeBottom" type="button">Bottom</button>
       <div id="board"></div>
     </div>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
   </div>
 `
 
+document.querySelector("#swipeLeft")?.addEventListener('click', () => game.swipe("left"))
+document.querySelector("#swipeTop")?.addEventListener('click', () => game.swipe("top"))
+document.querySelector("#swipeRight")?.addEventListener('click', () => game.swipe("right"))
+document.querySelector("#swipeBottom")?.addEventListener('click', () => game.swipe("bottom"))

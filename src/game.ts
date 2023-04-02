@@ -41,15 +41,19 @@ class Game {
   swipe(dir: Swipe) {
     switch (dir) {
       case 'left': {
+        console.log('swipe left')
         break
       }
       case 'top': {
+        console.log('swipe top')
         break
       }
       case 'right': {
+        console.log('swipe right')
         break
       }
       case 'bottom': {
+        console.log('swipe bottom')
         break
       }
       default: {
