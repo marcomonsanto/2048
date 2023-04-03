@@ -37,6 +37,7 @@ describe("Game Testsuite", () => {
         (x) => x !== undefined
       );
       expect(tilesWithValues.length).toBe(1);
+      expect(tilesWithValues[0]).toBe(2);
 
       game.swipe("right");
 
@@ -44,6 +45,8 @@ describe("Game Testsuite", () => {
         (x) => x !== undefined
       );
       expect(tilesWithValuesAfterSwipe.length).toBe(2);
+      expect(tilesWithValuesAfterSwipe.includes(1)).toBe(true);
+      expect(tilesWithValuesAfterSwipe.includes(2)).toBe(true);
     });
   test("It should merge when pushed againts other with same value", () => {
     const game = new Game();
@@ -121,9 +124,9 @@ describe("Game Testsuite", () => {
     const game = new Game(3);
     // TODO: Try to add proper mocking
     game.board = [
-      [ 32, 16, 32],
-      [ 32, 16, 32],
-      [ 32, 16, 32],
+      [32, 16, 32],
+      [32, 16, 32],
+      [32, 16, 32],
     ];
     game.updateEmptySquares();
 

@@ -1,11 +1,11 @@
 type Swipe = "left" | "top" | "right" | "bottom";
-type Status = "win" | "inProgress" |  "lost";
+type Status = "win" | "inProgress" | "lost";
 type Previous = {
   isAvailable: boolean;
   howMany: number;
   tileValue: number | undefined;
 };
-const TILE_INITIAL_VALUE = 2;
+const TILE_INITIAL_VALUE = 1;
 
 class Game {
   size: number;
@@ -15,8 +15,8 @@ class Game {
 
   constructor(size: number = 6) {
     this.size = size;
-    this.board = this.generateInitialBoard()
-    this.addNumberToBoard();
+    this.board = this.generateInitialBoard();
+    this.addNumberToBoard(2);
   }
 
   generateInitialBoard(): Array<Array<number | undefined>> {
@@ -32,13 +32,13 @@ class Game {
     return initialBoard;
   }
 
-  addNumberToBoard() {
+  addNumberToBoard(value: number = TILE_INITIAL_VALUE) {
     if (!this.board || this.status !== "inProgress") return;
 
     const random = this.emptySquares.splice(rand(this.emptySquares.length), 1);
 
     const [row, col] = random[0].split(".");
-    this.board[Number(row)][Number(col)] = TILE_INITIAL_VALUE;
+    this.board[Number(row)][Number(col)] = value;
   }
 
   updateEmptySquares(): void {
@@ -51,12 +51,12 @@ class Game {
     }
     this.emptySquares = emptySquares;
     if (emptySquares.length === 0) {
-      this.status =  "lost"
+      this.status = "lost";
     }
   }
 
   swipe(dir: Swipe) {
-    if (this.status !== "inProgress") return
+    if (this.status !== "inProgress") return;
 
     console.time("swipe timming");
     switch (dir) {
@@ -106,7 +106,7 @@ class Game {
               previous.tileValue === currentTileValue
             ) {
               const newValue = previous.tileValue + currentTileValue;
-              this.board[i][j + previous.howMany + 1] = newValue; 
+              this.board[i][j + previous.howMany + 1] = newValue;
               this.board[i][j] = undefined;
 
               previous = {
@@ -114,8 +114,8 @@ class Game {
                 howMany: 1 + previous.howMany,
                 tileValue: undefined,
               };
-              if (newValue === 2048){
-                this.status = "win"
+              if (newValue === 2048) {
+                this.status = "win";
                 break;
               }
               continue;
