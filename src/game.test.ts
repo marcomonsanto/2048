@@ -28,9 +28,69 @@ describe("Game Testsuite", () => {
       expect(tilesWithValues.length).toBe(1);
       expect(tilesWithValues[0]).toBe(2);
     }),
-    // test("User can swipe left, top, right, bottom", () => {
-    //   expect(false).toBe(true);
-    // })
+    test("User can swipe left", () => {
+      const game = new Game(callback, 3);
+      // TODO: Try to add proper mocking
+      game.board = [
+        [undefined, 1, undefined],
+        [undefined, 1, undefined],
+        [undefined, 2, undefined],
+      ];
+
+      game.swipe("left");
+
+      expect(game.board[0][0]).toBe(1);
+      expect(game.board[1][0]).toBe(1);
+      expect(game.board[2][0]).toBe(2);
+    }),
+    test("User can swipe top", () => {
+      const game = new Game(callback, 3);
+      // TODO: Try to add proper mocking
+      game.board = [
+        [undefined, undefined, undefined],
+        [1, 1, 2],
+        [undefined, 1, 1],
+      ];
+
+      game.swipe("top");
+
+      expect(game.board[0][0]).toBe(1);
+      expect(game.board[0][1]).toBe(2);
+      expect(game.board[0][2]).toBe(2);
+      expect(game.board[1][2]).toBe(1);
+    }),
+    test("User can swipe right", () => {
+      const game = new Game(callback, 3);
+      // TODO: Try to add proper mocking
+      game.board = [
+        [undefined, 1, undefined],
+        [undefined, 1, undefined],
+        [undefined, 2, undefined],
+      ];
+
+      game.swipe("right");
+
+      expect(game.board[0][2]).toBe(1);
+      expect(game.board[1][2]).toBe(1);
+      expect(game.board[2][2]).toBe(2);
+    }),
+    test("User can swipe bottom", () => {
+      const game = new Game(callback, 3);
+      // TODO: Try to add proper mocking
+      game.board = [
+        [undefined, 1, undefined],
+        [1, 1, 2],
+        [undefined, 1, 1],
+      ];
+
+      game.swipe("bottom");
+
+      expect(game.board[2][0]).toBe(1);
+      expect(game.board[1][1]).toBe(1);
+      expect(game.board[2][1]).toBe(2);
+      expect(game.board[1][2]).toBe(2);
+      expect(game.board[2][2]).toBe(1);
+    }),
     test("It should add a new tile in a free space", () => {
       const game = new Game(callback);
 
