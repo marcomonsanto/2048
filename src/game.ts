@@ -1,5 +1,5 @@
 type Swipe = "left" | "top" | "right" | "bottom";
-type Status = "win" | "inProgress" | "lost";
+export type Status = "win" | "inProgress" | "lost";
 type Previous = {
   isAvailable: boolean;
   howMany: number;
@@ -13,9 +13,12 @@ class Game {
   board: Board;
   emptySquares: string[] = [];
   status: Status = "inProgress";
-  callback: (board: Board) => void;
+  callback: (board: Board, status: Status) => void;
 
-  constructor(callback: (board: Board) => void, size: number = 6) {
+  constructor(
+    callback: (board: Board, status: Status) => void,
+    size: number = 6
+  ) {
     this.callback = callback;
     this.size = size;
     this.board = this.generateInitialBoard();
@@ -42,7 +45,7 @@ class Game {
 
     const [row, col] = random[0].split(".");
     this.board[Number(row)][Number(col)] = value;
-    this.callback(this.board);
+    this.callback(this.board, this.status);
   }
 
   updateEmptySquares(): void {
@@ -148,13 +151,13 @@ class Game {
     }
     this.updateEmptySquares();
     this.addNumberToBoard();
-    this.callback(this.board);
+    this.callback(this.board, this.status);
     console.table(this.board);
     console.timeEnd("swipe timming");
   }
 
   onBoardUpdate() {
-    this.callback(this.board);
+    this.callback(this.board, this.status);
   }
 }
 

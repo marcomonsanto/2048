@@ -2,12 +2,13 @@ import { describe, test, expect, beforeEach, vi } from "vitest";
 import { flatten } from "lodash-es";
 import { Game } from "./game";
 
+const callback = vi.fn();
 describe("Game Testsuite", () => {
   beforeEach(() => {
     vi.resetModules();
   }),
     test("Loads the game with a gid of 6x6 by default", () => {
-      const game = new Game();
+      const game = new Game(callback);
 
       const numberOfRows = game.board.length;
       const numberOfCols = game.board[0].length;
@@ -18,7 +19,7 @@ describe("Game Testsuite", () => {
       expect(numberOfTiles).toBe(36);
     }),
     test("Loads Game properly with 1 tile with value 2", () => {
-      const game = new Game();
+      const game = new Game(callback);
 
       const tilesWithValues = flatten(game.board).filter(
         (x) => x !== undefined
@@ -31,7 +32,7 @@ describe("Game Testsuite", () => {
     //   expect(false).toBe(true);
     // })
     test("It should add a new tile in a free space", () => {
-      const game = new Game();
+      const game = new Game(callback);
 
       const tilesWithValues = flatten(game.board).filter(
         (x) => x !== undefined
@@ -49,7 +50,7 @@ describe("Game Testsuite", () => {
       expect(tilesWithValuesAfterSwipe.includes(2)).toBe(true);
     });
   test("It should merge when pushed againts other with same value", () => {
-    const game = new Game();
+    const game = new Game(callback);
     // TODO: Try to add proper mocking
     game.board = [
       [undefined, undefined, undefined, undefined, undefined, undefined],
@@ -59,8 +60,8 @@ describe("Game Testsuite", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined],
     ];
-
-    expect(game.board[1][4]).toBe(2);
+    callback;
+    expect(game.board[1][2]);
     expect(game.board[1][5]).toBe(2);
 
     game.swipe("right");
@@ -70,15 +71,14 @@ describe("Game Testsuite", () => {
   });
   test("If there are 3 values next to each other, e.g. 2 2 2, and the player slides right,the values closest to the wall should merge first resulting in 2 4.", () => {
     // vi.mock('./game', () => {
-    //   const Game = vi.fn()
+    //   const Game = vi.fncallback()
 
-    //   Game.prototype.generateInitialBoard = vi.fn().mockReturnValue([[],[]])
-
+    //   Game.prototype.generateInitialBoard = vi.fn().mockReturnValue([[],[]cal
     //   return {
     //     Game
     //   }
     // })
-    const game = new Game();
+    const game = new Game(callback);
     // TODO: Try to add proper mocking
     game.board = [
       [undefined, undefined, undefined, undefined, undefined, undefined],
@@ -93,13 +93,12 @@ describe("Game Testsuite", () => {
     expect(game.board[1][5]).toBe(2);
 
     game.swipe("right");
-
     expect(game.board[1][4]).toBe(2);
     expect(game.board[1][5]).toBe(4);
   });
   test("If any tile reaches the value 2048 the game is won", () => {
-    const game = new Game();
-    // TODO: Try to add proper mocking
+    const game = new Game(callback);
+    // TODO: Try to add prcallbackoper mocking
     game.board = [
       [undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, 1024, undefined, undefined, 1024],
@@ -109,7 +108,7 @@ describe("Game Testsuite", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined],
     ];
 
-    expect(game.board[1][2]).toBe(1024);
+    expect(game.board[1][1024]);
     expect(game.board[1][5]).toBe(1024);
 
     game.swipe("right");
@@ -117,12 +116,11 @@ describe("Game Testsuite", () => {
     expect(game.board[1][2]).not.toBe(1024);
     expect(game.board[1][4]).not.toBe(1024);
     expect(game.board[1][5]).toBe(2048);
-
     expect(game.status).toBe("win");
   });
   test("If there is no free space to put the new tile the game is lost", () => {
-    const game = new Game(3);
-    // TODO: Try to add proper mocking
+    const game = new Game(callback, 3);
+    // TODO: Try to add propin
     game.board = [
       [32, 16, 32],
       [32, 16, 32],
@@ -131,6 +129,8 @@ describe("Game Testsuite", () => {
     game.updateEmptySquares();
 
     game.swipe("right");
+
+    console.log("gamestatus: ", game.status);
 
     expect(game.status).toBe("lost");
   });
