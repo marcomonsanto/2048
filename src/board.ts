@@ -12,7 +12,7 @@ export function setupBoard(element: HTMLDivElement) {
         break;
       }
       case "inProgress": {
-        element.innerHTML = JSON.stringify(board);
+        element.innerHTML = boardUI(board);
       }
     }
     // counter = count;
@@ -33,4 +33,30 @@ export function setupBoard(element: HTMLDivElement) {
   document
     .querySelector("#swipeBottom")
     ?.addEventListener("click", () => game.swipe("bottom"));
+}
+
+function boardUI(board: Board) {
+  const tile = function (value: number | undefined) {
+    return `<div class="tile">${value ?? "x"}</div>`;
+  };
+
+  const row = function (elements: Array<number | undefined>) {
+    let rowHTML = "";
+    for (let i = 0; i < elements.length; i++) {
+      rowHTML += tile(elements[i]);
+    }
+    return `<div class="row">${rowHTML}</div>`;
+  };
+
+  let boardUI = "";
+
+  for (let i = 0; i < board.length; i++) {
+    boardUI += row(board[i]);
+  }
+
+  const container = `
+    <div class="container">${boardUI}</div>
+  `;
+
+  return container;
 }
