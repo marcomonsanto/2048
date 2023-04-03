@@ -5,22 +5,25 @@ type Previous = {
   howMany: number;
   tileValue: number | undefined;
 };
+export type Board = Array<Array<number | undefined>>;
 const TILE_INITIAL_VALUE = 1;
 
 class Game {
   size: number;
-  board: Array<Array<number | undefined>>;
+  board: Board;
   emptySquares: string[] = [];
   status: Status = "inProgress";
+  callback: (board: Board) => void;
 
-  constructor(size: number = 6) {
+  constructor(callback: (board: Board) => void, size: number = 6) {
+    this.callback = callback;
     this.size = size;
     this.board = this.generateInitialBoard();
     this.addNumberToBoard(2);
   }
 
-  generateInitialBoard(): Array<Array<number | undefined>> {
-    let initialBoard: Array<Array<number | undefined>> = [];
+  generateInitialBoard(): Board {
+    let initialBoard: Board = [];
     for (let i = 0; i < this.size; i++) {
       initialBoard.push([]);
       for (let j = 0; j < this.size; j++) {
@@ -39,6 +42,7 @@ class Game {
 
     const [row, col] = random[0].split(".");
     this.board[Number(row)][Number(col)] = value;
+    this.callback(this.board);
   }
 
   updateEmptySquares(): void {
@@ -144,8 +148,13 @@ class Game {
     }
     this.updateEmptySquares();
     this.addNumberToBoard();
+    this.callback(this.board);
     console.table(this.board);
     console.timeEnd("swipe timming");
+  }
+
+  onBoardUpdate() {
+    this.callback(this.board);
   }
 }
 

@@ -1,11 +1,7 @@
-import './style.css'
-import { Game } from './game'
+import "./style.css";
+import { setupBoard } from "./board";
 
-const game = new Game();
-console.table(game.board);
-console.log(game.emptySquares);
-
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <h1>2048</h1>
     <div>
@@ -16,9 +12,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <div id="board"></div>
     </div>
   </div>
-`
+`;
 
-document.querySelector("#swipeLeft")?.addEventListener('click', () => game.swipe("left"))
-document.querySelector("#swipeTop")?.addEventListener('click', () => game.swipe("top"))
-document.querySelector("#swipeRight")?.addEventListener('click', () => game.swipe("right"))
-document.querySelector("#swipeBottom")?.addEventListener('click', () => game.swipe("bottom"))
+setupBoard(document.querySelector("#board")!);
