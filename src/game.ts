@@ -98,10 +98,7 @@ class Game {
             }
 
             // MERGE: Value in current tile, no space before but values ARE equal
-            if (
-              // !previous.isAvailable &&
-              previous.tileValue === currentTileValue
-            ) {
+            if (previous.tileValue === currentTileValue) {
               const newValue = previous.tileValue + currentTileValue;
               this.board[i][j - previous.howMany - 1] = newValue;
               this.board[i][j] = undefined;
@@ -164,10 +161,7 @@ class Game {
             }
 
             // MERGE: Value in current tile, no space before but values ARE equal
-            if (
-              // !previous.isAvailable &&
-              previous.tileValue === currentTileValue
-            ) {
+            if (previous.tileValue === currentTileValue) {
               const newValue = previous.tileValue + currentTileValue;
               this.board[j - previous.howMany - 1][i] = newValue;
               this.board[j][i] = undefined;
@@ -230,10 +224,7 @@ class Game {
             }
 
             // MERGE: Value in current tile, no space before but values ARE equal
-            if (
-              // !previous.isAvailable &&
-              previous.tileValue === currentTileValue
-            ) {
+            if (previous.tileValue === currentTileValue) {
               const newValue = previous.tileValue + currentTileValue;
               this.board[i][j + previous.howMany + 1] = newValue;
               this.board[i][j] = undefined;
@@ -296,10 +287,7 @@ class Game {
             }
 
             // MERGE: Value in current tile, no space before but values ARE equal
-            if (
-              // !previous.isAvailable &&
-              previous.tileValue === currentTileValue
-            ) {
+            if (previous.tileValue === currentTileValue) {
               const newValue = previous.tileValue + currentTileValue;
               this.board[j + previous.howMany + 1][i] = newValue;
               this.board[j][i] = undefined;
