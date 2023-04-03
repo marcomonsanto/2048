@@ -68,7 +68,69 @@ class Game {
     console.time("swipe timming");
     switch (dir) {
       case "left": {
-        console.log("swipe left");
+        for (let i = 0; i <= this.size - 1; i++) {
+          let previous: Previous = {
+            isAvailable: false,
+            howMany: 0,
+            tileValue: undefined,
+          };
+          for (let j = 0; j <= this.size - 1; j++) {
+            let currentTileValue = this.board[i][j];
+            // No value in current tile
+            if (!currentTileValue) {
+              previous = {
+                isAvailable: true,
+                howMany: previous.isAvailable ? previous.howMany + 1 : 1,
+                tileValue: previous.tileValue,
+              };
+              continue;
+            }
+
+            // Value in current tile, but no space before and values are different
+            if (
+              !previous.isAvailable &&
+              previous.tileValue !== currentTileValue
+            ) {
+              previous = {
+                isAvailable: false,
+                howMany: 0,
+                tileValue: currentTileValue,
+              };
+              continue;
+            }
+
+            // MERGE: Value in current tile, no space before but values ARE equal
+            if (
+              // !previous.isAvailable &&
+              previous.tileValue === currentTileValue
+            ) {
+              const newValue = previous.tileValue + currentTileValue;
+              this.board[i][j - previous.howMany - 1] = newValue;
+              this.board[i][j] = undefined;
+
+              previous = {
+                isAvailable: true,
+                howMany: 1 + previous.howMany,
+                tileValue: undefined,
+              };
+              if (newValue === 2048) {
+                this.status = "win";
+                break;
+              }
+              continue;
+            }
+
+            // if value in tile and space before
+            this.board[i][j - previous.howMany] = currentTileValue;
+            this.board[i][j] = undefined;
+
+            previous = {
+              isAvailable: true,
+              howMany: previous.isAvailable ? previous.howMany : 1,
+              tileValue: currentTileValue,
+            };
+          }
+        }
         break;
       }
       case "top": {
@@ -135,7 +197,7 @@ class Game {
             previous = {
               isAvailable: true,
               howMany: previous.isAvailable ? previous.howMany : 1,
-              tileValue: undefined,
+              tileValue: currentTileValue,
             };
           }
         }
